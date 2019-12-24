@@ -1,0 +1,125 @@
+C51 COMPILER V9.60.0.0   MAIN                                                              12/24/2019 16:10:10 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: D:\SIngelChip\Keil_C51\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #define __main_c
+   2          #include "includeAll.h"
+   3          //=============================================================================
+   4          void main() {
+   5   1        
+   6   1        SysInit();
+   7   1        VarsInit();
+   8   1        //使能看门狗
+   9   1        F_turnOnWDT();
+  10   1      
+  11   1        while (1) {
+  12   2          //喂狗
+  13   2          F_clearWDT();
+  14   2          //业务代码
+  15   2          TimeProcess();
+  16   2          TaskSetting();
+  17   2          TaskProcess();
+  18   2          DisplayProcess();
+  19   2        }
+  20   1      }
+  21          //=============================================================================
+  22          void TimeProcess() {
+  23   1        static uint8_t timer5ms = 0;
+  24   1        static uint16_t second = 0;
+  25   1      
+  26   1        if (b1ms) {
+  27   2          // 1ms 执行一次
+  28   2          b1ms = 0;
+  29   2          timer5ms++;
+  30   2          second++;
+  31   2        }
+  32   1        if (timer5ms >= D_5ms) {
+  33   2          // 5ms 执行一次
+  34   2          timer5ms = 0;
+  35   2          GetKeys();
+  36   2        }
+  37   1        if (second >= D_1000ms) {
+  38   2          // 1s 执行一次
+  39   2          second = 0;
+  40   2          //CLRWDT = 1; To:清除看门狗定时器
+  41   2        }
+  42   1        
+  43   1      
+  44   1      }
+  45          //=============================================================================
+  46          void TaskProcess() {}
+  47          //=============================================================================
+  48          void TaskSetting() {
+  49   1        if (D_keyValue1 == keyValue1) {
+  50   2          ledflg = ~ledflg;
+  51   2        }
+  52   1        keyValue1 = D_keyNull;
+  53   1      
+  54   1      
+  55   1        if (D_keyValue1 == keyValue2) {
+C51 COMPILER V9.60.0.0   MAIN                                                              12/24/2019 16:10:10 PAGE 2   
+
+  56   2          ledflg = ~ledflg;
+  57   2        }
+  58   1        keyValue2 = D_keyNull;
+  59   1      
+  60   1      
+  61   1        if (D_keyValue1 == keyValue3) {
+  62   2          ledflg = ~ledflg;
+  63   2        }
+  64   1        keyValue3 = D_keyNull;
+  65   1        
+  66   1      
+  67   1        if (D_keyValue1 == keyValue4) {
+  68   2          ledflg = ~ledflg;
+  69   2        }
+  70   1        keyValue4 = D_keyNull;
+  71   1      }
+  72          //=============================================================================
+  73          void DisplayProcess() {
+  74   1        static uint16_t secon = 0;
+  75   1       
+  76   1        // F_ledOn();
+  77   1        if (ledflg) {
+  78   2          
+  79   2          F_led1Off();
+  80   2          if (secon <= 10) {
+  81   3          // 1s 执行一次
+  82   3          
+  83   3          F_buzz();
+  84   3          secon++;
+  85   3          }
+  86   2          secon = 0;
+  87   2          
+  88   2        }
+  89   1          
+  90   1        else {
+  91   2          if (secon <= 10) {
+  92   3          // 1s 执行一次
+  93   3          
+  94   3          F_buzz();
+  95   3          secon++;
+  96   3          }
+  97   2          F_led1On();
+  98   2          secon = 0;
+  99   2        }
+ 100   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    201    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

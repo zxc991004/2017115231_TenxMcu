@@ -1,0 +1,85 @@
+C51 COMPILER V9.60.0.0   INIT                                                              12/24/2019 16:10:09 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE INIT
+OBJECT MODULE PLACED IN init.OBJ
+COMPILER INVOKED BY: D:\SIngelChip\Keil_C51\C51\BIN\C51.EXE init.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2)
+
+line level    source
+
+   1          #define __init_c
+   2          #include "includeAll.h"
+   3          //=============================================================================
+   4          void SysInit() {
+   5   1        F_clearWDT();
+   6   1        //时钟初始化
+   7   1        CLKCON = 0x03; // Clock div 1  7.3728Mhz
+   8   1        STPPCK = 0;
+   9   1        STPFCK = 0;
+  10   1        _nop_();
+  11   1        _nop_();
+  12   1        _nop_();
+  13   1        _nop_();
+  14   1        _nop_();
+  15   1        SELFCK = 1;
+  16   1        _nop_();
+  17   1        _nop_();
+  18   1        _nop_();
+  19   1        _nop_();
+  20   1        _nop_();
+  21   1        _nop_();
+  22   1        _nop_();
+  23   1        _nop_();
+  24   1        _nop_();
+  25   1        _nop_();
+  26   1        // IO 模式初始化
+  27   1        //按键3_4 p3modh 1~0
+  28   1        //3_2 p3modl 5-4
+  29   1        //1_7 p1modh 7~6
+  30   1        //1_2 p1modl 5~4
+  31   1        //按键初始化
+  32   1      
+  33   1        // PINMOD = 0x00;
+  34   1        P3MODH = 0x24;
+  35   1        P3MODL = 0x84;
+  36   1        P1MODH = 0x2a;
+  37   1        P1MODL = 0xa2;
+  38   1        
+  39   1        // IO 状态初始化
+  40   1        P3_4 = 1;
+  41   1        P3_2 = 1;
+  42   1        P1_7 = 1;
+  43   1        P1_2 = 1;
+  44   1      
+  45   1        P1_5 = 1;
+  46   1        F_ledOn();
+  47   1        F_led2Off();
+  48   1        
+  49   1        // T2 初始化  7.3728Mhz/2 = 3686400Hz
+  50   1        //  3686400Hz/3686.4 = 1000Hz = 1ms timer2 interrupt
+  51   1        TH2 = (65536 - 3686) / 256;
+  52   1        RCP2H = TH2;
+  53   1        TL2 = (65536 - 3686) % 256;
+  54   1        RCP2L = TL2;
+  55   1        TR2 = 1;
+C51 COMPILER V9.60.0.0   INIT                                                              12/24/2019 16:10:09 PAGE 2   
+
+  56   1        ET2 = 1;
+  57   1        EA = 1;
+  58   1      }
+  59          //=============================================================================
+  60          void VarsInit() {}
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     72    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
